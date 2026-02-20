@@ -46,6 +46,9 @@ spec:
       {{- end }}
       {{- if .Values.cloneStaticSiteFromGit.enabled }}
         - name: git-clone-repository
+          {{- if .Values.initContainerSecurityContext }}
+          securityContext: {{- toYaml .Values.initContainerSecurityContext | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.cloneStaticSiteFromGit.image.registry }}/{{ .Values.cloneStaticSiteFromGit.image.repository }}:{{ .Values.cloneStaticSiteFromGit.image.tag }}"
           imagePullPolicy: {{ .Values.cloneStaticSiteFromGit.image.pullPolicy }}
           {{- if .Values.cloneStaticSiteFromGit.gitClone.command }}
@@ -149,7 +152,7 @@ spec:
             - name: emptydir
               mountPath: /var/cache/nginx/scgi_temp
               subPath: scgi-temp-dir
-          {{- if .Values.cloneStaticSiteFromGit.enabled }}
+          {{- if or .Values.cloneStaticSiteFromGit.enabled .Values.staticSiteConfigmap }}
             - name: static-site
               mountPath: /usr/share/nginx/html
           {{- end }}
@@ -256,9 +259,9 @@ spec:
       volumes:
         - name: emptydir
           emptyDir: {}
-        {{- if .Values.cloneStaticSiteFromGit.enabled }}
+        {{- if or .Values.cloneStaticSiteFromGit.enabled .Values.staticSiteConfigmap }}
         - name: static-site
-          emptyDir: {}
+          {{- include "nginx.staticSiteVolume" . | nindent 10 }}
         {{- end }}
       {{- if or .Values.serverConfig .Values.streamServerConfig }}
         - name: nginx-server-config

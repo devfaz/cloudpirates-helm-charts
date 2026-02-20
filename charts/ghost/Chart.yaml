@@ -2,8 +2,8 @@ apiVersion: v2
 name: ghost
 description: A simple, powerful publishing platform that allows you to share your stories with the world.
 type: application
-version: 0.6.3
-appVersion: "6.10.1"
+version: 0.13.1
+appVersion: "6.19.1"
 keywords:
   - ghost
   - blogging
@@ -21,7 +21,7 @@ maintainers:
     url: https://www.srf.ch
 dependencies:
   - name: common
-    version: "2.x.x"
+    version: "2.2.0"
     repository: oci://registry-1.docker.io/cloudpirates
   - name: mariadb
     version: "0.4.x"
@@ -45,7 +45,7 @@ annotations:
       url: https://www.cloudpirates.io
   artifacthub.io/changes: |2
         - kind: changed
-          description: "Update charts/ghost/values.yaml ghost to v6.10.0 (minor) (#702)"
+          description: "Update charts/ghost/values.yaml ghost (#948)"
           links:
-            - name: "Commit 7652333"
-              url: "https://github.com/CloudPirates-io/helm-charts/commit/7652333"
+            - name: "Commit b7cb150"
+              url: "https://github.com/CloudPirates-io/helm-charts/commit/b7cb150"
